@@ -1,0 +1,18 @@
+server:
+  port: 8084
+eureka:
+  client:
+    serviceUrl: [defaultZone,http://localhost:8761/eureka/]
+    fetch-registry: true
+zuul:
+  ignoredServices: "*"
+  routes:
+    users-api:
+      path: /users-api/**
+      url: http://localhost:8081
+    movie-api:
+      path: /movie-api/**
+      url: http://localhost:8082
+    review-api:
+      path: /reviews-api/**
+      url: http://localhost:8083
