@@ -5,10 +5,8 @@ import com.example.reviewsapi.entity.Review;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import org.springframework.context.annotation.Lazy;
 
 @Mapper
-@Lazy
 public interface ReviewMapper {
 
     ReviewMapper INSTANCE= Mappers.getMapper(ReviewMapper.class);

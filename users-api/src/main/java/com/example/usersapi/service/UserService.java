@@ -1,8 +1,9 @@
 package com.example.usersapi.service;
 
-import com.example.usersapi.entity.User;
+import com.example.usersapi.dto.UserDto;
 
 public interface UserService {
-    User getUserById(long userId);
-    void createUser(User userDtoToUser);
+    UserDto getUserById(Long userId);
+
+    void createUser(UserDto userDto);
 }

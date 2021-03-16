@@ -1,9 +1,10 @@
 package com.example.movieapi.service;
 
-import com.example.movieapi.entity.Movie;
+import com.example.movieapi.dto.MovieDto;
 
 public interface MovieService {
 
-    Movie getMovieById(Long movieId);
-    void createMovie(Movie movie);
+    MovieDto getMovieById(Long movieId);
+
+    void createMovie(MovieDto movieDto);
 }

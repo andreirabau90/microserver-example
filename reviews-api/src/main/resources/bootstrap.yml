@@ -1,6 +1,8 @@
 spring:
   application:
     name: reviews-api
+  profiles:
+    active: development
   cloud:
     config:
       fail-fast: true

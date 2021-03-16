@@ -24,7 +24,7 @@ public class ResponseDto {
         private String title;
         private String directorName;
         private Date releaseDate;
-        private Double userRating;
-        private String userComment;
+        private Double rating;
+        private String comment;
     }
 }
