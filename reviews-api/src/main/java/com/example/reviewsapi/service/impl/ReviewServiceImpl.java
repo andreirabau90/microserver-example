@@ -30,22 +30,21 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ResponseDto getAllReviewsByUserId(Long userId) {
-        ExecutorService service = Executors.newScheduledThreadPool(5);
-        List<Review> reviews = CompletableFuture.supplyAsync(() ->
-                        reviewRepository.findAllByUserId(userId),
-                service).join();
+        ExecutorService service = Executors.newScheduledThreadPool(10);
+        CompletableFuture<List<Review>> reviews = CompletableFuture
+                .supplyAsync(() -> reviewRepository.findAllByUserId(userId), service);
 
-        User user = CompletableFuture.supplyAsync(() ->
-                        userClient.getUserById(userId),
-                service).join();
+        CompletableFuture<User> user = CompletableFuture
+                .supplyAsync(() -> userClient.getUserById(userId), service);
 
-        List<ResponseDto.ResponseData> dataList = reviews.stream()
-                .map(review -> ResponseDtoMapper.INSTANCE.mapToDataResponseDto(
-                        review,
-                        CompletableFuture.supplyAsync(() -> movieClient.getMovieById(review.getMovieId()), service).join()))
+        List<ResponseDto.ResponseData> dataList = reviews.join().stream()
+                .map(review -> CompletableFuture.supplyAsync(() -> movieClient.getMovieById(review.getMovieId()), service)
+                        .thenApplyAsync(movie -> ResponseDtoMapper.INSTANCE.mapToDataResponseDto(review, movie)))
+                .parallel()
+                .map(CompletableFuture::join)
                 .collect(Collectors.toList());
 
-        return ResponseDtoMapper.INSTANCE.mapToResponseDto(user, dataList);
+        return ResponseDtoMapper.INSTANCE.mapToResponseDto(user.join(), dataList);
     }
 
     @Override
